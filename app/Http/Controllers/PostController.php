@@ -54,7 +54,8 @@ class PostController extends Controller
      */
     public function show(Post $post): JsonResource
     {
-        // TODO: Refactor (N+1).
+        $post->load('user', 'comments');
+
         return new PostResource($post);
     }
 }
