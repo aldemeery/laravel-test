@@ -64,4 +64,14 @@ class PostRejected extends Notification
     {
         return "Your post with title '{$this->post->title}' has been rejected due to use of bad words.";
     }
+
+    /**
+     * Get the post of this notification.
+     *
+     * @return \App\Models\Post
+     */
+    public function getPost(): Post
+    {
+        return $this->post;
+    }
 }
