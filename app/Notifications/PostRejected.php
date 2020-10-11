@@ -22,6 +22,8 @@ class PostRejected extends Notification
     /**
      * Create a new notification instance.
      *
+     * @param \App\Models\Post $post
+     *
      * @return void
      */
     public function __construct(Post $post)

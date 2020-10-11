@@ -20,6 +20,8 @@ class ModerateModel
     /**
      * Create the event listener.
      *
+     * @param \App\Services\TextModerator $textModerator
+     *
      * @return void
      */
     public function __construct(TextModerator $textModerator)

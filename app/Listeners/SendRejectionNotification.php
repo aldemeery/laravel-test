@@ -3,7 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\ModelDisqualified;
+use App\Models\Comment;
 use App\Models\Post;
+use App\Notifications\CommentRejected;
 use App\Notifications\PostRejected;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -60,6 +62,7 @@ class SendRejectionNotification
     {
         return [
             Post::class => PostRejected::class,
+            Comment::class => CommentRejected::class,
         ];
     }
 
