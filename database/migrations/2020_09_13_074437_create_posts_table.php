@@ -21,7 +21,7 @@ class CreatePostsTable extends Migration
             $table->enum('status', ['approved', 'pending', 'rejected'])->default('pending');
             $table->timestamps();
 
-            // TODO: Add the missing.
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

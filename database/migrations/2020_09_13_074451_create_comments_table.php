@@ -21,7 +21,8 @@ class CreateCommentsTable extends Migration
             $table->enum('status', [1, 2, 3])->default(2)->comment("1: approved, 2: pending, 3: rejected"); // Don't change this.
             $table->timestamps();
 
-            // TODO: Add the missing.
+            $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('post_id')->references('id')->on('posts')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 
