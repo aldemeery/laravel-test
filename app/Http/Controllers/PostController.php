@@ -18,11 +18,9 @@ class PostController extends Controller
      */
     public function index(): JsonResource
     {
-        // TODO: Get approved posts only (use best practices).
-        // TODO: Refactor.
-        $posts = Post::all();
+        $posts = Post::with('user')->paginate();
 
-        return PostResource::collection($posts); // TODO: Add posts count to response.
+        return PostResource::collection($posts);
     }
 
     /**

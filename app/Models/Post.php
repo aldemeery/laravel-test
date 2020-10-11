@@ -2,14 +2,16 @@
 
 namespace App\Models;
 
+use App\Contracts\HasStatus;
 use App\Models\Comment;
 use App\Models\User;
+use App\Scopes\Approved;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Post extends Model
+class Post extends Model implements HasStatus
 {
     use HasFactory;
 
@@ -23,6 +25,16 @@ class Post extends Model
         'title',
         'content',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new Approved());
+    }
 
     /**
      * The user who created this post.
@@ -42,6 +54,16 @@ class Post extends Model
     public function comments(): HasMany
     {
         return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get a value representing the "Approved" status.
+     *
+     * @return mixed
+     */
+    public function getApprovedStatus()
+    {
+        return 'approved';
     }
 
     /**
