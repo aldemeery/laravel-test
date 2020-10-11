@@ -2,6 +2,8 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\User;
+use App\Http\Resources\Comment;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class Post extends JsonResource
@@ -14,14 +16,13 @@ class Post extends JsonResource
      */
     public function toArray($request)
     {
-        // TODO: Refactor.
         return [
             'id' => $this->id,
-            'user' => $this->user,
             'title' => $this->title,
             'content' => $this->content,
             'status' => $this->status,
-            'comments' => $this->comments,
+            'user' => new User($this->whenLoaded('user')),
+            'comments' => Comment::collection($this->whenLoaded('comments')),
         ];
     }
 }
