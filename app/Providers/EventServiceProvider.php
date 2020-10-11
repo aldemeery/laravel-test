@@ -2,6 +2,13 @@
 
 namespace App\Providers;
 
+use App\Events\ModelDisqualified;
+use App\Events\ModelQualified;
+use App\Events\ModeratedModelCreated;
+use App\Listeners\ApproveModel;
+use App\Listeners\ModerateModel;
+use App\Listeners\RejectModel;
+use App\Listeners\SendRejectionNotification;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -17,6 +24,16 @@ class EventServiceProvider extends ServiceProvider
     protected $listen = [
         Registered::class => [
             SendEmailVerificationNotification::class,
+        ],
+        ModeratedModelCreated::class => [
+            ModerateModel::class,
+        ],
+        ModelQualified::class => [
+            ApproveModel::class,
+        ],
+        ModelDisqualified::class => [
+            RejectModel::class,
+            SendRejectionNotification::class,
         ],
     ];
 

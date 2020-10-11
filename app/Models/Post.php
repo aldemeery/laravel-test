@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Contracts\HasStatus;
+use App\Contracts\Moderated;
 use App\Models\Comment;
 use App\Models\User;
 use App\Scopes\Approved;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Post extends Model implements HasStatus
+class Post extends Model implements HasStatus, Moderated
 {
     use HasFactory;
 
@@ -67,11 +68,21 @@ class Post extends Model implements HasStatus
     }
 
     /**
-     * Approve this post.
+     * Get the text used for moderation.
      *
-     * @return \App\Models\Post
+     * @return string
      */
-    public function approve(): Post
+    public function getModerationText(): string
+    {
+        return "{$this->title} {$this->content}";
+    }
+
+    /**
+     * Approve this model.
+     *
+     * @return self
+     */
+    public function approve(): self
     {
         $this->status = 'approved';
         $this->save();
@@ -80,11 +91,11 @@ class Post extends Model implements HasStatus
     }
 
     /**
-     * Reject this post.
+     * Reject this model.
      *
-     * @return \App\Models\Post
+     * @return self
      */
-    public function reject(): Post
+    public function reject(): self
     {
         $this->status = 'rejected';
         $this->save();

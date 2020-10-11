@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ModeratedModelCreated;
+use App\Http\Requests\CreatePostRequest;
 use App\Http\Resources\Post as PostResource;
 use App\Models\Post;
 use Illuminate\Http\JsonResponse;
@@ -29,21 +31,13 @@ class PostController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request): JsonResponse
+    public function store(CreatePostRequest $request): JsonResponse
     {
-        // TODO: Refactor.
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|max:255',
-            'content' => 'required',
-        ]);
+        $post = auth()->user()->posts()->create($request->validated());
 
-        if ($validator->passes()) {
-            $post = auth()->user()->posts()->create($validator->validated());
-            // TODO: Perform text moderation, approve/reject the post, send a notification to the user.
-            return response()->json(['message' => 'Success.'], 202);
-        } else {
-            return response()->json(['message' => 'The given data was invalid.', 'errors' => $validator->errors()], 422);
-        }
+        event(new ModeratedModelCreated($post));
+
+        return response()->json(['message' => 'Success.'], 202);
     }
 
     /**

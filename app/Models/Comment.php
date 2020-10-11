@@ -66,11 +66,11 @@ class Comment extends Model implements HasStatus
     }
 
     /**
-     * Approve this comment.
+     * Approve this model.
      *
-     * @return \App\Models\Comment
+     * @return self
      */
-    public function approve(): Comment
+    public function approve(): self
     {
         $this->status = 1;
         $this->save();
@@ -79,11 +79,11 @@ class Comment extends Model implements HasStatus
     }
 
     /**
-     * Reject this comment.
+     * Reject this model.
      *
-     * @return \App\Models\Comment
+     * @return self
      */
-    public function reject(): Comment
+    public function reject(): self
     {
         $this->status = 3;
         $this->save();
